@@ -1,7 +1,7 @@
 # PyTorch Image Classification
 Simple image classification for custom dataset (pytorch-lightning, timm).
 
-Since it is implemented for easy handling, it may not be suitable for full-scale model building, but it has basic functionalities and is probably easy to modify.
+Since it is implemented for easy handling, it may not be suitable for best model building, but it has basic functionalities and is probably easy to modify.
 
 ## Data Preparation
 

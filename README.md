@@ -4,7 +4,7 @@ Simple image classification for custom dataset (pytorch-lightning, timm)
 ## Data Preparation
 
 ```
-python download_and_generate_jpeg_dataset.py -d mnist
+python download_and_generate_jpeg_dataset.py -d cifar10
 ```
 
 ```
@@ -21,10 +21,39 @@ optional arguments:
                         Output directory. (default: dataset name)
 ```
 
+```
+./cifar10
+├── raw
+│   ├── cifar-10-batches-py
+│   └── cifar-10-python.tar.gz
+├── train
+│   ├── airplane
+│   ├── automobile
+│   ├── bird
+│   ├── cat
+│   ├── deer
+│   ├── dog
+│   ├── frog
+│   ├── horse
+│   ├── ship
+│   └── truck
+└── val
+    ├── airplane
+    ├── automobile
+    ├── bird
+    ├── cat
+    ├── deer
+    ├── dog
+    ├── frog
+    ├── horse
+    ├── ship
+    └── truck
+```
+
 ## Run
 
 ```
-python train.py -d mnist
+python train.py -d cifar10
 ```
 
 ```

@@ -11,7 +11,7 @@ docker-compose build
 docker-compose run --rm dev
 ```
 
-Please see [docker-compose.yaml](./docker-compose.yaml), [Dockerfile](./Dockerfile), and [requirements.txt](./requirements.txt).
+Please see [docker-compose.yaml](./docker-compose.yaml), [Dockerfile](./docker/Dockerfile), and [requirements.txt](./docker/requirements.txt).
 
 
 ## Data Preparation

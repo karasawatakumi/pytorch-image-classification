@@ -1,14 +1,25 @@
 # PyTorch Image Classification
-Simple image classification for custom dataset (pytorch-lightning, timm).
+Simple image classification for custom dataset based on [PyTorch Lightning](https://www.pytorchlightning.ai)  & [timm](https://github.com/rwightman/pytorch-image-models).
 
-Since it is implemented for easy handling, it may not be suitable for best model building, but it has basic functionalities and is probably easy to modify.
+[BACKGROUND]: I created a single-file (train.py), easily understood repository for my friend. So it may not be suitable for exhaustive experiments, but this has basic functionalities and is probably easy to use/modify.
+
+
+## Docker Environment
+
+```
+docker-compose build
+docker-compose run --rm dev
+```
+
+Please see [docker-compose.yaml](./docker-compose.yaml), [Dockerfile](./Dockerfile), and [requirements.txt](./requirements.txt).
+
 
 ## Data Preparation
 
-Dataset preparation is simple. Prepare directories with the name of the class to train as follows, and store corresponding images in their directories.
+Dataset preparation is simple. Prepare directories with the name of the class to train as follows, and store corresponding images in their directories. ([`ImageFolder`](https://pytorch.org/vision/main/generated/torchvision.datasets.ImageFolder.html) class is used inside the loader.)
 
 ```
-./{dataset name}
+{dataset name}/
 ├── train/
 │   ├── {class1}/
 │   ├── {class2}/
@@ -20,7 +31,9 @@ Dataset preparation is simple. Prepare directories with the name of the class to
 ```
 
 ### Sample scripts
-For reference, I have prepared scripts to download `torchvision` datasets. `torchvision` originally provides us with datasets as `Dataset` class, but since the purpose of this repository is to run training for our own dataset, I save them once as jpeg images for easier understanding.
+For reference, I have prepared a script to download `torchvision` datasets. 
+
+`torchvision` originally provides us with datasets as `Dataset` class, but since the purpose of this repository is to run training for our own dataset, I save them once as jpeg images for easier understanding.
 
 ```
 python scripts/download_and_generate_jpeg_dataset.py -d cifar10
@@ -40,53 +53,44 @@ optional arguments:
                         Output directory. (default: dataset name)
 ```
 
-The script produces the following directory structure:
+The script produces the following directory structure (when `outdir` is not specified):
 
 ```
-./cifar10
+cifar10/
 ├── raw/
 │   ├── cifar-10-batches-py
 │   └── cifar-10-python.tar.gz
-├── train
-│   ├── airplane
-│   ├── automobile
-│   ├── bird
-│   ├── cat
-│   ├── deer
-│   ├── dog
-│   ├── frog
-│   ├── horse
-│   ├── ship
-│   └── truck
-└── val
-    ├── airplane
-    ├── automobile
-    ├── bird
-    ├── cat
-    ├── deer
-    ├── dog
-    ├── frog
-    ├── horse
-    ├── ship
-    └── truck
+├── train/
+│   ├── airplane/
+│   ├── automobile/
+│   ├── bird/
+│   ├── cat/
+│   ├── deer/
+│   ├── dog/
+│   ├── frog/
+│   ├── horse/
+│   ├── ship/
+│   └── truck/
+└── val/
+    ├── airplane/
+    ├── automobile/
+    ├── bird/
+    ├── cat/
+    ├── deer/
+    ├── dog/
+    ├── frog/
+    ├── horse/
+    ├── ship/
+    └── truck/
 ```
 
 - `raw/`: raw files downloaded by torchvision (Its content depends on dataset)
 
 
-## Docker Environment
-
-```
-docker-compose build
-docker-compose run --rm dev
-```
-
-Please see [docker-compose.yaml](./docker-compose.yaml), [Dockerfile](./Dockerfile), and [requirements.txt](./requirements.txt).
-
 ## Run
 
 ### Training
-Simple implementation with everything in a single file (train.py)
+Simple implementation with everything in a single file ([train.py](./train.py))
 
 Specify the dataset root directory containing the `train` and `val` directories.
 
@@ -94,7 +98,7 @@ Specify the dataset root directory containing the `train` and `val` directories.
 python train.py -d cifar10
 ```
 
-#### Detailed settings by command line ([code link](https://github.com/karasawatakumi/pytorch-image-classification/blob/main/train.py#L32-L43)):
+#### Detailed settings by command line ([code link](https://github.com/karasawatakumi/pytorch-image-classification/blob/main/train.py#L31-L42)):
 
 ```
 usage: train.py [-h] --dataset DATASET [--outdir OUTDIR]
@@ -131,8 +135,7 @@ optional arguments:
 ```
 
 
-
-#### solver settings ([code link](https://github.com/karasawatakumi/pytorch-image-classification/blob/main/train.py#L20-L27)):
+#### solver settings ([code link](https://github.com/karasawatakumi/pytorch-image-classification/blob/main/train.py#L19-L26)):
 
 ```python
 OPT = 'adam'  # adam, sgd
@@ -145,11 +148,9 @@ LR_STEP_SIZE = 5  # only when LR_SCHEDULER is step
 LR_STEP_MILESTONES = [10, 15]  # only when LR_SCHEDULER is multistep
 ```
 
-#### transforms settings ([code link](https://github.com/karasawatakumi/pytorch-image-classification/blob/main/train.py#L106-L120)):
+#### transforms settings ([code link](https://github.com/karasawatakumi/pytorch-image-classification/blob/main/train.py#L105-L119)):
 
-We use the torchvision transforms because it is easy to use with the `ImageFolder` dataset.
-
-- ref. https://pytorch.org/vision/stable/transforms.html
+We use the [torchvision transforms](https://pytorch.org/vision/stable/transforms.html) because it is easy to use with the `ImageFolder` dataset.
 
 ```python
         if is_train:

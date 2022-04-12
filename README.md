@@ -1,7 +1,26 @@
 # PyTorch Image Classification
-Simple image classification for custom dataset (pytorch-lightning, timm)
+Simple image classification for custom dataset (pytorch-lightning, timm).
+
+Since it is implemented for easy handling, it may not be suitable for full-scale model building, but it has basic functionalities and is probably easy to modify.
 
 ## Data Preparation
+
+Dataset preparation is simple. Prepare directories with the name of the class to train as follows, and store corresponding images in their directories.
+
+```
+./{dataset name}
+├── train/
+│   ├── {class1}/
+│   ├── {class2}/
+│   ├── ...
+└── val
+    ├── {class1}/
+    ├── {class2}/
+    ├── ...
+```
+
+### Sample scripts
+For reference, I have prepared scripts to download `torchvision` datasets. `torchvision` originally provides us with datasets as `Dataset` class, but since the purpose of this repository is to run training for our own dataset, I save them once as jpeg images for easier understanding.
 
 ```
 python download_and_generate_jpeg_dataset.py -d cifar10
@@ -23,7 +42,7 @@ optional arguments:
 
 ```
 ./cifar10
-├── raw
+├── raw/
 │   ├── cifar-10-batches-py
 │   └── cifar-10-python.tar.gz
 ├── train
@@ -50,11 +69,28 @@ optional arguments:
     └── truck
 ```
 
+- `raw/`: raw files downloaded by torchvision (Its content depends on dataset)
+
+
+## Docker Environment
+
+```
+docker-compose build
+docker-compose run --rm dev
+```
+
+Please see [docker-compose.yaml](./docker-compose.yaml), [Dockerfile](./Dockerfile), and [requirements.txt](./requirements.txt).
+
 ## Run
+
+### Training
+Simple implementation with everything in a single file (train.py).
 
 ```
 python train.py -d cifar10
 ```
+
+#### Detailed settings by command line ([code link](https://github.com/karasawatakumi/pytorch-image-classification/blob/main/train.py#L31-L42)):
 
 ```
 usage: train.py [-h] --dataset DATASET [--outdir OUTDIR]
@@ -90,10 +126,11 @@ optional arguments:
   --seed SEED           Seed
 ```
 
-```
-# solver settings
-(in train.py)
 
+
+#### solver settings ([code link](https://github.com/karasawatakumi/pytorch-image-classification/blob/main/train.py#L18-L26)):
+
+```python
 OPT = 'adam'  # adam, sgd
 WEIGHT_DECAY = 0.0001
 MOMENTUM = 0.9  # only when OPT is sgd
@@ -104,10 +141,9 @@ LR_STEP_SIZE = 5  # only when LR_SCHEDULER is step
 LR_STEP_MILESTONES = [10, 15]  # only when LR_SCHEDULER is multistep
 ```
 
-```
-# augmentation settings
-(ImageTransform class in train.py)
+#### augmentation settings ([code link](https://github.com/karasawatakumi/pytorch-image-classification/blob/main/train.py#L131-L145)):
 
+```python
         if is_train:
             self.transform = transforms.Compose([
                 transforms.RandomHorizontalFlip(p=0.5),

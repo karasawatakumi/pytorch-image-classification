@@ -143,6 +143,10 @@ LR_STEP_MILESTONES = [10, 15]  # only when LR_SCHEDULER is multistep
 
 #### augmentation settings ([code link](https://github.com/karasawatakumi/pytorch-image-classification/blob/main/train.py#L131-L145)):
 
+We use the torchvision transforms because it is easy to use with the `ImageFolder` dataset.
+
+- ref. https://pytorch.org/vision/stable/transforms.html
+
 ```python
         if is_train:
             self.transform = transforms.Compose([

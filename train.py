@@ -1,6 +1,6 @@
 import argparse
 import os
-from typing import Union
+from typing import Union, Optional
 
 import timm
 import torch
@@ -154,6 +154,7 @@ class SimpleData(LightningDataModule):
         self.root_dir = root_dir
         self.root_train = os.path.join(root_dir, 'train')
         self.root_val = os.path.join(root_dir, 'val')
+        self.num_classes = len(os.listdir(self.root_train))
         self.img_size = img_size
         self.batch_size = batch_size
         self.num_workers = num_workers
@@ -180,11 +181,13 @@ class SimpleData(LightningDataModule):
 
 
 class SimpleModel(LightningModule):
-    def __init__(self, model_name: str = 'resnet18', pretrained: bool = True):
+    def __init__(self, model_name: str = 'resnet18',
+                 pretrained: bool = True, num_classes: Optional[int] = None):
         super().__init__()
         self.save_hyperparameters()
-        self.model = timm.create_model(model_name=model_name, pretrained=pretrained)
-
+        self.model = timm.create_model(model_name=model_name,
+                                       pretrained=pretrained,
+                                       num_classes=num_classes)
         self.train_loss = nn.CrossEntropyLoss()
         self.train_acc = Accuracy()
         self.val_loss = nn.CrossEntropyLoss()
@@ -238,8 +241,8 @@ def get_trainer(args):
 if __name__ == '__main__':
     args = get_args()
     seed_everything(args.seed)
-    model = SimpleModel(model_name=args.model_name)
     data = SimpleData(root_dir=args.dataset, img_size=args.img_size,
                       batch_size=args.batch_size, num_workers=args.num_workers)
+    model = SimpleModel(model_name=args.model_name, num_classes=data.num_classes)
     trainer = get_trainer(args)
     trainer.fit(model, data)

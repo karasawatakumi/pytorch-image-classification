@@ -40,6 +40,8 @@ optional arguments:
                         Output directory. (default: dataset name)
 ```
 
+The script produces the following directory structure:
+
 ```
 ./cifar10
 ├── raw/

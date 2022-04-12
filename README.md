@@ -13,7 +13,7 @@ Dataset preparation is simple. Prepare directories with the name of the class to
 │   ├── {class1}/
 │   ├── {class2}/
 │   ├── ...
-└── val
+└── val/
     ├── {class1}/
     ├── {class2}/
     ├── ...
@@ -94,7 +94,7 @@ Specify the dataset root directory containing the `train` and `val` directories.
 python train.py -d cifar10
 ```
 
-#### Detailed settings by command line ([code link](https://github.com/karasawatakumi/pytorch-image-classification/blob/main/train.py#L31-L42)):
+#### Detailed settings by command line ([code link](https://github.com/karasawatakumi/pytorch-image-classification/blob/main/train.py#L32-L43)):
 
 ```
 usage: train.py [-h] --dataset DATASET [--outdir OUTDIR]
@@ -132,7 +132,7 @@ optional arguments:
 
 
 
-#### solver settings ([code link](https://github.com/karasawatakumi/pytorch-image-classification/blob/main/train.py#L18-L26)):
+#### solver settings ([code link](https://github.com/karasawatakumi/pytorch-image-classification/blob/main/train.py#L20-L27)):
 
 ```python
 OPT = 'adam'  # adam, sgd
@@ -145,7 +145,7 @@ LR_STEP_SIZE = 5  # only when LR_SCHEDULER is step
 LR_STEP_MILESTONES = [10, 15]  # only when LR_SCHEDULER is multistep
 ```
 
-#### augmentation settings ([code link](https://github.com/karasawatakumi/pytorch-image-classification/blob/main/train.py#L131-L145)):
+#### augmentation settings ([code link](https://github.com/karasawatakumi/pytorch-image-classification/blob/main/train.py#L106-L120)):
 
 We use the torchvision transforms because it is easy to use with the `ImageFolder` dataset.
 

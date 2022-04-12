@@ -16,6 +16,8 @@ Please see [docker-compose.yaml](./docker-compose.yaml), [Dockerfile](./Dockerfi
 
 ## Data Preparation
 
+### Custom dataset
+
 Dataset preparation is simple. Prepare directories with the name of the class to train as follows, and store corresponding images in their directories. ([`ImageFolder`](https://pytorch.org/vision/main/generated/torchvision.datasets.ImageFolder.html) class is used inside the loader.)
 
 ```
@@ -30,7 +32,7 @@ Dataset preparation is simple. Prepare directories with the name of the class to
     ├── ...
 ```
 
-### Sample scripts
+### Sample Dataset
 For reference, I have prepared a script to download `torchvision` datasets. 
 
 `torchvision` originally provides us with datasets as `Dataset` class, but since the purpose of this repository is to run training for our own dataset, I save them once as jpeg images for easier understanding.

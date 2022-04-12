@@ -23,7 +23,7 @@ Dataset preparation is simple. Prepare directories with the name of the class to
 For reference, I have prepared scripts to download `torchvision` datasets. `torchvision` originally provides us with datasets as `Dataset` class, but since the purpose of this repository is to run training for our own dataset, I save them once as jpeg images for easier understanding.
 
 ```
-python download_and_generate_jpeg_dataset.py -d cifar10
+python scripts/download_and_generate_jpeg_dataset.py -d cifar10
 ```
 
 ```

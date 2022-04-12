@@ -86,7 +86,9 @@ Please see [docker-compose.yaml](./docker-compose.yaml), [Dockerfile](./Dockerfi
 ## Run
 
 ### Training
-Simple implementation with everything in a single file (train.py).
+Simple implementation with everything in a single file (train.py)
+
+Specify the dataset root directory containing the `train` and `val` directories.
 
 ```
 python train.py -d cifar10

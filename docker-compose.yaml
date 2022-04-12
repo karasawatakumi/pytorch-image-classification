@@ -3,7 +3,7 @@ services:
   dev:
     runtime: nvidia
     build:
-      context: .
+      context: ./docker
       dockerfile: Dockerfile
     volumes:
       - .:/work

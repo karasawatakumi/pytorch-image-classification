@@ -6,6 +6,7 @@ import timm
 import torch
 import torch.nn as nn
 import torchvision.transforms as transforms
+from PIL import Image
 from pytorch_lightning import LightningModule, LightningDataModule
 from pytorch_lightning import Trainer
 from pytorch_lightning.callbacks import ModelCheckpoint, LearningRateMonitor
@@ -26,7 +27,7 @@ LR_STEP_SIZE = 5  # only when LR_SCHEDULER is step
 LR_STEP_MILESTONES = [10, 15]  # only when LR_SCHEDULER is multistep
 
 
-def get_args():
+def get_args() -> argparse.Namespace:
     parser = argparse.ArgumentParser(description='Train classifier.')
     parser.add_argument('--dataset', '-d', type=str, required=True, help='Root directory of dataset')
     parser.add_argument('--outdir', '-o', type=str, default='results', help='Output directory')
@@ -42,23 +43,6 @@ def get_args():
     parser.add_argument('--seed', type=int, default=42, help='Seed')
     args = parser.parse_args()
     return args
-
-
-def get_gpu_settings(args: argparse.Namespace):
-    if args.gpu_ids is not None:
-        # list
-        gpus = args.gpu_ids
-        strategy = "ddp" if len(gpus) > 1 else None
-    elif args.n_gpu is not None:
-        # int
-        gpus = args.n_gpu
-        strategy = "ddp" if gpus > 1 else None
-    else:
-        gpus = 1
-        strategy = None
-    gpus = gpus if torch.cuda.is_available() else None
-    strategy = None if gpus is None else strategy
-    return gpus, strategy
 
 
 def get_optimizer(parameters) -> torch.optim.Optimizer:
@@ -117,15 +101,6 @@ def get_lr_scheduler_config(optimizer: torch.optim.Optimizer) -> dict:
     return lr_scheduler_config
 
 
-def get_basic_callbacks(save_interval: int = 1):
-    lr_callback = LearningRateMonitor(logging_interval='epoch')
-    ckpt_callback = ModelCheckpoint(filename='epoch{epoch:03d}',
-                                    auto_insert_metric_name=False,
-                                    save_top_k=-1,
-                                    every_n_epochs=save_interval)
-    return [ckpt_callback, lr_callback]
-
-
 class ImageTransform:
     def __init__(self, is_train: bool, img_size: Union[int, tuple] = 112):
         if is_train:
@@ -144,7 +119,7 @@ class ImageTransform:
                                      std=[0.229, 0.224, 0.225])
             ])
 
-    def __call__(self, img):
+    def __call__(self, img: Image.Image) -> torch.Tensor:
         return self.transform(img)
 
 
@@ -193,7 +168,7 @@ class SimpleModel(LightningModule):
         self.val_loss = nn.CrossEntropyLoss()
         self.val_acc = Accuracy()
 
-    def forward(self, x: torch.Tensor):
+    def forward(self, x):
         return self.model(x)
 
     def training_step(self, batch, batch_idx):
@@ -224,8 +199,34 @@ class SimpleModel(LightningModule):
         return {"optimizer": optimizer, "lr_scheduler": lr_scheduler_config}
 
 
-def get_trainer(args):
-    callbacks = get_basic_callbacks(save_interval=args.save_interval)
+def get_basic_callbacks(checkpoint_interval: int = 1) -> list:
+    lr_callback = LearningRateMonitor(logging_interval='epoch')
+    ckpt_callback = ModelCheckpoint(filename='epoch{epoch:03d}',
+                                    auto_insert_metric_name=False,
+                                    save_top_k=-1,
+                                    every_n_epochs=checkpoint_interval)
+    return [ckpt_callback, lr_callback]
+
+
+def get_gpu_settings(args: argparse.Namespace) -> tuple:
+    if args.gpu_ids is not None:
+        # list
+        gpus = args.gpu_ids
+        strategy = "ddp" if len(gpus) > 1 else None
+    elif args.n_gpu is not None:
+        # int
+        gpus = args.n_gpu
+        strategy = "ddp" if gpus > 1 else None
+    else:
+        gpus = 1
+        strategy = None
+    gpus = gpus if torch.cuda.is_available() else None
+    strategy = None if gpus is None else strategy
+    return gpus, strategy
+
+
+def get_trainer(args: argparse.Namespace) -> Trainer:
+    callbacks = get_basic_callbacks(checkpoint_interval=args.save_interval)
     gpus, strategy = get_gpu_settings(args)
     trainer = Trainer(
         max_epochs=args.epochs,

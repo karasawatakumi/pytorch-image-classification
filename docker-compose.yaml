@@ -1,0 +1,9 @@
+version: "2.3"
+services:
+  dev:
+    runtime: nvidia
+    build:
+      context: .
+      dockerfile: Dockerfile
+    volumes:
+      - .:/work

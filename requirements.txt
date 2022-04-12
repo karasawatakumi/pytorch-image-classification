@@ -1,0 +1,7 @@
+ipython==7.16.1
+jedi==0.17.2 # https://github.com/ipython/ipython/issues/12748
+torch
+torchmetrics
+torchvision
+pytorch-lightning
+timm

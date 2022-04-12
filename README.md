@@ -1,7 +1,7 @@
 # PyTorch Image Classification
-Simple image classification for custom dataset based on [PyTorch Lightning](https://www.pytorchlightning.ai)  & [timm](https://github.com/rwightman/pytorch-image-models).
+Simple image classification for custom dataset based on [PyTorch Lightning](https://www.pytorchlightning.ai)  & [timm](https://github.com/rwightman/pytorch-image-models). You can train a classification model by simply preparing directories of images.
 
-[BACKGROUND]: I created a single-file (train.py), easily understood repository for my friend. So it may not be suitable for exhaustive experiments, but this has basic functionalities and is probably easy to use/modify.
+*I created a single-file (train.py), easily understood repository for my friend. So it may not be suitable for exhaustive experiments, but this has basic functionalities and is probably easy to use/modify.
 
 
 ## Docker Environment

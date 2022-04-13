@@ -13,6 +13,8 @@ docker-compose run --rm dev
 
 Or install directly with pip:
 
+(\**The libraries are installed directly into your environment.*)
+
 ```
 pip install -r docker/requirements.txt
 ```
@@ -177,3 +179,13 @@ We use the [torchvision transforms](https://pytorch.org/vision/stable/transforms
                                      std=[0.229, 0.224, 0.225])
             ])
 ```
+
+#### tensorboard logging
+
+We logged training with [tensorboard](https://pytorch.org/docs/stable/tensorboard.html) by default.
+
+```
+tensorboard --logdir ./results
+```
+
+![image](https://user-images.githubusercontent.com/13147636/163080755-e97695c3-80ed-4242-91e9-fd6b14b921a6.png)

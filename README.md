@@ -11,6 +11,12 @@ docker-compose build
 docker-compose run --rm dev
 ```
 
+Or install directly with pip:
+
+```
+pip install -r docker/requirements.txt
+```
+
 Please see [docker-compose.yaml](./docker-compose.yaml), [Dockerfile](./docker/Dockerfile), and [requirements.txt](./docker/requirements.txt).
 
 

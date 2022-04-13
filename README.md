@@ -110,6 +110,8 @@ python train.py -d cifar10
 
 #### Detailed settings by command line ([code link](https://github.com/karasawatakumi/pytorch-image-classification/blob/main/train.py#L32-L43)):
 
+You can use most of the models in the [timm](https://github.com/rwightman/pytorch-image-models) by specifying `--model-name` directly.
+
 ```
 usage: train.py [-h] --dataset DATASET [--outdir OUTDIR]
                 [--model-name MODEL_NAME] [--img-size IMG_SIZE]

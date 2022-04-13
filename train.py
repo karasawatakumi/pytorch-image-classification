@@ -1,5 +1,6 @@
 import argparse
 import os
+from pprint import pprint
 from typing import Union, Optional
 
 import timm
@@ -126,17 +127,19 @@ class SimpleData(LightningDataModule):
     def __init__(self, root_dir: str, img_size: int = 112, batch_size: int = 8, num_workers: int = 16):
         super().__init__()
         self.root_dir = root_dir
-        self.root_train = os.path.join(root_dir, 'train')
-        self.root_val = os.path.join(root_dir, 'val')
-        self.num_classes = len(os.listdir(self.root_train))
         self.img_size = img_size
         self.batch_size = batch_size
         self.num_workers = num_workers
 
+        self.train_dataset = ImageFolder(root=os.path.join(root_dir, 'train'),
+                                         transform=ImageTransform(is_train=True, img_size=self.img_size))
+        self.val_dataset = ImageFolder(root=os.path.join(root_dir, 'val'),
+                                       transform=ImageTransform(is_train=False, img_size=self.img_size))
+        self.classes = self.train_dataset.classes
+        self.class_to_idx = self.train_dataset.class_to_idx
+
     def train_dataloader(self) -> DataLoader:
-        train_dataset = ImageFolder(root=self.root_train,
-                                    transform=ImageTransform(is_train=True, img_size=self.img_size))
-        dataloader = DataLoader(train_dataset,
+        dataloader = DataLoader(self.train_dataset,
                                 batch_size=self.batch_size,
                                 shuffle=True,
                                 drop_last=True,
@@ -144,9 +147,7 @@ class SimpleData(LightningDataModule):
         return dataloader
 
     def val_dataloader(self) -> DataLoader:
-        val_dataset = ImageFolder(root=self.root_val,
-                                  transform=ImageTransform(is_train=False, img_size=self.img_size))
-        dataloader = DataLoader(val_dataset,
+        dataloader = DataLoader(self.val_dataset,
                                 batch_size=self.batch_size,
                                 shuffle=False,
                                 drop_last=False,
@@ -241,8 +242,14 @@ def get_trainer(args: argparse.Namespace) -> Trainer:
 if __name__ == '__main__':
     args = get_args()
     seed_everything(args.seed)
+
     data = SimpleData(root_dir=args.dataset, img_size=args.img_size,
                       batch_size=args.batch_size, num_workers=args.num_workers)
-    model = SimpleModel(model_name=args.model_name, num_classes=data.num_classes)
+    model = SimpleModel(model_name=args.model_name, num_classes=len(data.classes))
     trainer = get_trainer(args)
+
+    print('Args:')
+    pprint(args.__dict__)
+    print('Training classes:')
+    pprint(data.class_to_idx)
     trainer.fit(model, data)

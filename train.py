@@ -33,7 +33,7 @@ def get_args() -> argparse.Namespace:
     parser.add_argument('--outdir', '-o', type=str, default='results', help='Output directory')
     parser.add_argument('--model-name', '-m', type=str, default='resnet18', help='Model name (timm)')
     parser.add_argument('--img-size', '-i', type=int, default=112, help='Input size of image')
-    parser.add_argument('--epochs', '-e', type=str, default=100, help='Number of training epochs')
+    parser.add_argument('--epochs', '-e', type=int, default=100, help='Number of training epochs')
     parser.add_argument('--save-interval', '-s', type=int, default=10, help='Save interval (epoch)')
     parser.add_argument('--batch-size', '-b', type=int, default=8, help='Batch size')
     parser.add_argument('--num-workers', '-w', type=int, default=12, help='Number of workers')

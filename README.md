@@ -1,7 +1,7 @@
 # PyTorch Image Classification
-Simple image classification for custom dataset based on [PyTorch Lightning](https://www.pytorchlightning.ai)  & [timm](https://github.com/rwightman/pytorch-image-models). You can train a classification model by simply preparing directories of images.
+Simple image classification for a custom dataset based on [PyTorch Lightning](https://www.pytorchlightning.ai)  & [timm](https://github.com/rwightman/pytorch-image-models). You can train a classification model by simply preparing directories of images.
 
-*I created a single-file (train.py), easily understood repository for my friend. So it may not be suitable for exhaustive experiments, but this has basic functionalities and is probably easy to use/modify.
+*This single-file (train.py) repository was created for a friend with ease of use as a priority, it may not be suitable for exhaustive experimentation. However, it does provide the basic functionalities and should be easy to use/modify.
 
 
 ## Docker Environment
@@ -26,7 +26,7 @@ Please see [docker-compose.yaml](./docker-compose.yaml), [Dockerfile](./docker/D
 
 ### Custom Dataset
 
-Dataset preparation is simple. Prepare directories with the name of the class to train as follows, and store corresponding images in their directories. ([`ImageFolder`](https://pytorch.org/vision/main/generated/torchvision.datasets.ImageFolder.html) class is used inside the loader.)
+Dataset preparation is simple. Prepare directories with the name of the class to train then store corresponding images in their directories as follows. ([`ImageFolder`](https://pytorch.org/vision/main/generated/torchvision.datasets.ImageFolder.html) class is used inside the loader.)
 
 ```
 {dataset name}/

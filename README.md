@@ -108,7 +108,7 @@ Specify the dataset root directory containing the `train` and `val` directories.
 python train.py -d cifar10
 ```
 
-#### Detailed settings by command line ([code link](https://github.com/karasawatakumi/pytorch-image-classification/blob/main/train.py#L31-L42)):
+#### Detailed settings by command line ([code link](https://github.com/karasawatakumi/pytorch-image-classification/blob/main/train.py#L32-L43)):
 
 ```
 usage: train.py [-h] --dataset DATASET [--outdir OUTDIR]
@@ -145,7 +145,7 @@ optional arguments:
 ```
 
 
-#### solver settings ([code link](https://github.com/karasawatakumi/pytorch-image-classification/blob/main/train.py#L19-L26)):
+#### solver settings ([code link](https://github.com/karasawatakumi/pytorch-image-classification/blob/main/train.py#L20-L27)):
 
 ```python
 OPT = 'adam'  # adam, sgd
@@ -158,7 +158,7 @@ LR_STEP_SIZE = 5  # only when LR_SCHEDULER is step
 LR_STEP_MILESTONES = [10, 15]  # only when LR_SCHEDULER is multistep
 ```
 
-#### transforms settings ([code link](https://github.com/karasawatakumi/pytorch-image-classification/blob/main/train.py#L105-L119)):
+#### transforms settings ([code link](https://github.com/karasawatakumi/pytorch-image-classification/blob/main/train.py#L106-L120)):
 
 We use the [torchvision transforms](https://pytorch.org/vision/stable/transforms.html) because it is easy to use with the `ImageFolder` dataset.
 

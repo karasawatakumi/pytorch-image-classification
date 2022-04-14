@@ -157,7 +157,7 @@ class SimpleData(LightningDataModule):
 
 class SimpleModel(LightningModule):
     def __init__(self, model_name: str = 'resnet18',
-                 pretrained: bool = True, num_classes: Optional[int] = None):
+                 pretrained: bool = False, num_classes: Optional[int] = None):
         super().__init__()
         self.save_hyperparameters()
         self.model = timm.create_model(model_name=model_name,
@@ -245,7 +245,9 @@ if __name__ == '__main__':
 
     data = SimpleData(root_dir=args.dataset, img_size=args.img_size,
                       batch_size=args.batch_size, num_workers=args.num_workers)
-    model = SimpleModel(model_name=args.model_name, num_classes=len(data.classes))
+    model = SimpleModel(model_name=args.model_name,
+                        pretrained=True,
+                        num_classes=len(data.classes))
     trainer = get_trainer(args)
 
     print('Args:')

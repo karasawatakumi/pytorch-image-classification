@@ -11,6 +11,8 @@ docker-compose build
 docker-compose run --rm dev
 ```
 
+ref. https://docs.docker.com/compose/gpu-support/
+
 Or install directly with pip:
 
 (\**The libraries are installed directly into your environment.*)

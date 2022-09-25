@@ -208,40 +208,53 @@ def get_basic_callbacks(checkpoint_interval: int = 1) -> list:
     return [ckpt_callback, lr_callback]
 
 
-def get_gpu_settings(args: argparse.Namespace) -> tuple:
-    if args.gpu_ids is not None:
-        # list
-        gpus = args.gpu_ids
-        strategy = "ddp" if len(gpus) > 1 else None
-    elif args.n_gpu is not None:
+def get_gpu_settings(gpu_ids: list[int], n_gpu: int) -> tuple[str, int | list[int] | None, str | None]:
+    """Get gpu settings for pytorch-lightning trainer:
+    https://pytorch-lightning.readthedocs.io/en/stable/common/trainer.html#trainer-flags
+
+    Args:
+        gpu_ids (list[int])
+        n_gpu (int)
+
+    Returns:
+        tuple[str, int, str]: accelerator, devices, strategy
+    """
+    if not torch.cuda.is_available():
+        return "cpu", None, None
+
+    if gpu_ids is not None:
+        devices = gpu_ids
+        strategy = "ddp" if len(gpu_ids) > 1 else None
+    elif n_gpu is not None:
         # int
-        gpus = args.n_gpu
-        strategy = "ddp" if gpus > 1 else None
+        devices = n_gpu
+        strategy = "ddp" if n_gpu > 1 else None
     else:
-        gpus = 1
+        devices = 1
         strategy = None
-    gpus = gpus if torch.cuda.is_available() else None
-    strategy = None if gpus is None else strategy
-    return gpus, strategy
+
+    return "gpu", devices, strategy
 
 
 def get_trainer(args: argparse.Namespace) -> Trainer:
     callbacks = get_basic_callbacks(checkpoint_interval=args.save_interval)
-    gpus, strategy = get_gpu_settings(args)
+    accelerator, devices, strategy = get_gpu_settings(args.gpu_ids, args.n_gpu)
     trainer = Trainer(
         max_epochs=args.epochs,
         callbacks=callbacks,
         default_root_dir=args.outdir,
-        gpus=gpus,
+        accelerator=accelerator,
+        devices=devices,
         strategy=strategy,
         logger=True,
+        deterministic=True,
     )
     return trainer
 
 
 if __name__ == '__main__':
     args = get_args()
-    seed_everything(args.seed)
+    seed_everything(args.seed, workers=True)
 
     data = SimpleData(root_dir=args.dataset, img_size=args.img_size,
                       batch_size=args.batch_size, num_workers=args.num_workers)

@@ -2,13 +2,20 @@ import argparse
 import os
 from typing import Optional
 
-from torchvision.datasets import MNIST, CIFAR10
+from torchvision.datasets import CIFAR10, MNIST
 
 
 def get_args():
     parser = argparse.ArgumentParser(description='Script for generating dataset.')
-    parser.add_argument('--dataset-name', '-d', required=True, help='Dataset name to generate. (mnist or cifar10)')
-    parser.add_argument('--outdir', '-o', default=None, help='Output directory. (default: dataset name)')
+    parser.add_argument(
+        '--dataset-name',
+        '-d',
+        required=True,
+        help='Dataset name to generate. (mnist or cifar10)',
+    )
+    parser.add_argument(
+        '--outdir', '-o', default=None, help='Output directory. (default: dataset name)'
+    )
     args = parser.parse_args()
     return args
 
@@ -28,9 +35,7 @@ def main(dataset_name: str = 'mnist', outdir: Optional[str] = None):
 
     for split in ['train', 'val']:
         download_dir = os.path.join(outdir, 'raw')
-        dataset = DATASET(root=download_dir,
-                          train=(split == 'train'),
-                          download=True)
+        dataset = DATASET(root=download_dir, train=(split == 'train'), download=True)
         classes = dataset.classes
 
         # output directories

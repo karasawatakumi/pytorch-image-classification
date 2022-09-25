@@ -1,7 +1,6 @@
 import argparse
 import os
 from pprint import pprint
-from typing import Optional, Union
 
 import timm
 import torch
@@ -109,7 +108,7 @@ def get_lr_scheduler_config(optimizer: torch.optim.Optimizer) -> dict:
 
 
 class ImageTransform:
-    def __init__(self, is_train: bool, img_size: Union[int, tuple] = 112):
+    def __init__(self, is_train: bool, img_size: int | tuple = 112):
         if is_train:
             self.transform = transforms.Compose(
                 [
@@ -187,7 +186,7 @@ class SimpleModel(LightningModule):
         self,
         model_name: str = 'resnet18',
         pretrained: bool = False,
-        num_classes: Optional[int] = None,
+        num_classes: int | None = None,
     ):
         super().__init__()
         self.save_hyperparameters()

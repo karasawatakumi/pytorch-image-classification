@@ -1,6 +1,5 @@
 import argparse
 import os
-from typing import Optional
 
 from torchvision.datasets import CIFAR10, MNIST
 
@@ -20,7 +19,7 @@ def get_args():
     return args
 
 
-def main(dataset_name: str = 'mnist', outdir: Optional[str] = None):
+def main(dataset_name: str = 'mnist', outdir: str | None = None):
     # torchvision datasets
     if dataset_name == 'mnist':
         DATASET = MNIST
